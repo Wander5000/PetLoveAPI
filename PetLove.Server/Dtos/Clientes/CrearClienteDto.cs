@@ -2,7 +2,7 @@
 {
     public class CrearClienteDto
     {
-        public long? Usuario { get; set; }
+        public int? Usuario { get; set; }
 
         public string TipoDocumento { get; set; } = null!;
 
