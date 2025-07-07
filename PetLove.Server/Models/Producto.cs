@@ -29,7 +29,7 @@ public partial class Producto
 
     public virtual ICollection<DetallesVenta> DetallesVenta { get; set; } = new List<DetallesVenta>();
 
-    public virtual ICollection<Imagene> Imagenes { get; set; } = new List<Imagene>();
+    public virtual ICollection<Imagen> Imagenes { get; set; } = new List<Imagen>();
 
     public virtual Marca MarcaNavigation { get; set; } = null!;
 

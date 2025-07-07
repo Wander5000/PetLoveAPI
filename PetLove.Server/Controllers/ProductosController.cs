@@ -56,7 +56,7 @@ namespace PetLove.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto ActualizarProductoDto)
+        public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto actualizarImagenDto)
         {
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
@@ -64,14 +64,14 @@ namespace PetLove.Server.Controllers
                 return NotFound("Producto no encontrado.");
             }
 
-            producto.Nombre = ActualizarProductoDto.NombreProducto;
-            producto.Categoria = ActualizarProductoDto.Categoria;
-            producto.Stock = ActualizarProductoDto.Stock;
-            producto.Medida = ActualizarProductoDto.Medida;
-            producto.Cantidad = ActualizarProductoDto.Cantidad;
-            producto.Marca = ActualizarProductoDto.Marca;
-            producto.Precio = ActualizarProductoDto.Precio;
-            producto.Estado = ActualizarProductoDto.Estado;
+            producto.Nombre = actualizarImagenDto.NombreProducto;
+            producto.Categoria = actualizarImagenDto.Categoria;
+            producto.Stock = actualizarImagenDto.Stock;
+            producto.Medida = actualizarImagenDto.Medida;
+            producto.Cantidad = actualizarImagenDto.Cantidad;
+            producto.Marca = actualizarImagenDto.Marca;
+            producto.Precio = actualizarImagenDto.Precio;
+            producto.Estado = actualizarImagenDto.Estado;
             await _context.SaveChangesAsync();
             return NoContent();
         }
