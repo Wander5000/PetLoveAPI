@@ -39,7 +39,7 @@ namespace PetLove.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProveedorDto>> CrearProveedor(ProveedorDto proveedorDto)
+        public async Task<ActionResult<AccionesProveedorDto>> CrearProveedor(AccionesProveedorDto proveedorDto)
         {
             if (!ModelState.IsValid)
             {
@@ -63,14 +63,12 @@ namespace PetLove.Server.Controllers
             _context.Proveedores.Add(proveedor);
             await _context.SaveChangesAsync();
 
-            proveedorDto.IdProveedor = proveedor.IdProveedor;
-
             return CreatedAtAction(nameof(ListarProveedores), new { id = proveedor.IdProveedor }, proveedorDto);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> ActualizarProveedor(int id, ProveedorDto proveedorDto)
+        public async Task<ActionResult> ActualizarProveedor(int id, AccionesProveedorDto proveedorDto)
         {
             var proveedor = await _context.Proveedores.FindAsync(id);
             if (proveedor == null)

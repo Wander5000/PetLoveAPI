@@ -34,7 +34,7 @@ namespace PetLove.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClienteDto>> CrearCliente(ClienteDto clienteDto)
+        public async Task<ActionResult<CrearClienteDto>> CrearCliente(CrearClienteDto CrearClienteDto)
         {
             if (!ModelState.IsValid)
             {
@@ -43,22 +43,27 @@ namespace PetLove.Server.Controllers
 
             var cliente = new Cliente
             {
-                NumeroDocumento = clienteDto.NumeroDocumento,
-                Nombres = clienteDto.Nombres,
-                Apellidos = clienteDto.Apellidos,
-                Correo = clienteDto.Correo,
-                Celular = clienteDto.Celular
+                Usuario = CrearClienteDto.Usuario,
+                TipoDocumento = CrearClienteDto.TipoDocumento,
+                NumeroDocumento = CrearClienteDto.NumeroDocumento,
+                Nombres = CrearClienteDto.Nombres,
+                Apellidos = CrearClienteDto.Apellidos,
+                Correo = CrearClienteDto.Correo,
+                Celular = CrearClienteDto.Celular,
+                Municipio = CrearClienteDto.Municipio,
+                Direccion = CrearClienteDto.Direccion,
+
             };
 
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
 
-            return CreatedAtAction(nameof(ListarClientes), new { id = cliente.IdCliente }, clienteDto);
+            return CreatedAtAction(nameof(ListarClientes), new { id = cliente.IdCliente }, CrearClienteDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> ActualizarCliente(int id, ClienteDto clienteDto)
+        public async Task<ActionResult> ActualizarCliente(int id, CrearClienteDto clienteDto)
         {
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
@@ -66,11 +71,15 @@ namespace PetLove.Server.Controllers
                 return NotFound("El cliente solicitado no existe.");
             }
 
+            cliente.Usuario = clienteDto.Usuario;
+            cliente.TipoDocumento = clienteDto.TipoDocumento;
             cliente.NumeroDocumento = clienteDto.NumeroDocumento;
             cliente.Nombres = clienteDto.Nombres;
             cliente.Apellidos = clienteDto.Apellidos;
             cliente.Correo = clienteDto.Correo;
             cliente.Celular = clienteDto.Celular;
+            cliente.Municipio = clienteDto.Municipio;
+            cliente.Direccion = clienteDto.Direccion;
 
             await _context.SaveChangesAsync();
             return NoContent();
