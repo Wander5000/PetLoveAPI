@@ -20,7 +20,7 @@
 
         public string Ciudad { get; set; } = null!;
 
-        public string Estado { get; set; } = "Activo";
+        public bool Estado { get; set; }
 
         public string? Contacto { get; set; }
     }
