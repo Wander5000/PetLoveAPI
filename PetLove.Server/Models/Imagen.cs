@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PetLove.Server.Models;
 
-public partial class Imagene
+public partial class Imagen
 {
     public int IdImagen { get; set; }
 
