@@ -85,6 +85,8 @@ namespace PetLove.Server.Controllers
                         PrecioUnitario = precioUnitario,
                         Subtotal = subtotal
                     };
+                    producto.Stock += detalleDto.Cantidad; 
+                    _context.Productos.Update(producto);
                     _context.DetallesCompras.Add(detalle);
                 }
                 await _context.SaveChangesAsync();

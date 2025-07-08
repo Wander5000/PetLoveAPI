@@ -1,6 +1,9 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using PetLove.Server.Context;
+using PetLove.Server.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddDbContext<PetLoveContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("defaultconnection")));
+
+builder.Services.AddValidatorsFromAssemblyContaining<ValidationMarker>();
+builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
