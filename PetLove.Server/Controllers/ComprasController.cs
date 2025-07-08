@@ -37,7 +37,6 @@ namespace PetLove.Server.Controllers
                 Detalles = c.DetallesCompras.Select(d => new DetalleCompraDto
                 {
                     IdDetalle = d.IdDetallesCompras,
-                    Compra = d.Compra,
                     Producto = d.ProductoNavigation.Nombre,
                     Cantidad = d.Cantidad,
                     PrecioUnitario = d.PrecioUnitario,
@@ -60,11 +59,12 @@ namespace PetLove.Server.Controllers
                     Proveedor = crearCompraDto.Proveedor,
                     FechaRegistro = crearCompraDto.FechaRegistro,
                     FechaCompra = crearCompraDto.FechaCompra,
-                    Total = crearCompraDto.Total,
                     Estado = crearCompraDto.Estado
                 };
                 _context.Compras.Add(compra);
                 await _context.SaveChangesAsync();
+
+                decimal totalCompra = 0;
 
                 foreach (var detalleDto in crearCompraDto.Detalles)
                 {
@@ -73,9 +73,12 @@ namespace PetLove.Server.Controllers
                     {
                         throw new Exception($"Producto con ID {detalleDto.Producto} no encontrado.");
                     }
-
                     var precioUnitario = producto.Precio;
                     var subtotal = precioUnitario * detalleDto.Cantidad;
+                    var stock = producto.Stock + detalleDto.Cantidad;
+                    totalCompra += subtotal;
+
+                    producto.Stock = stock;
 
                     var detalle = new DetallesCompra
                     {
@@ -87,6 +90,7 @@ namespace PetLove.Server.Controllers
                     };
                     _context.DetallesCompras.Add(detalle);
                 }
+                compra.Total = totalCompra;
                 await _context.SaveChangesAsync();
                 await transaccion.CommitAsync();
                 return CreatedAtAction(nameof(ListarCompras), new { id = compra.IdCompra }, crearCompraDto);
