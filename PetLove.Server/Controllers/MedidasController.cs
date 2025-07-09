@@ -33,9 +33,9 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<MedidaDto>> CrearMedida(AccionesMedidaDto medidaDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Hubo un Error Con Tu solicitud, Revisa que los campos esten correctos y vuelve a intentarlo");
+                return BadRequest(ModelState);
             }
             var medida = new Medida
             {
@@ -50,6 +50,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarMedida(int id, AccionesMedidaDto medidaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var medida = await _context.Medidas.FindAsync(id);
             if (medida == null)
             {

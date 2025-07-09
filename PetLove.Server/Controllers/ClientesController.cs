@@ -38,7 +38,7 @@ namespace PetLove.Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Error en la solicitud. Verifica los campos e intenta nuevamente.");
+                return BadRequest(ModelState); 
             }
 
             var cliente = new Cliente
@@ -64,7 +64,12 @@ namespace PetLove.Server.Controllers
 
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarCliente(int id, CrearClienteDto clienteDto)
-        {
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
             {

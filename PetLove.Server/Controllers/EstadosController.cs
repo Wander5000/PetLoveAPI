@@ -44,6 +44,7 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarEstado(int id, AccionesEstadoDto actualizarEstadoDto)
         {
+     
             var estado = await _context.Estados.FindAsync(id);
             if (estado == null)
             {

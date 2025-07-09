@@ -50,6 +50,11 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CrearCompraDto>> CrearCompra(CrearCompraDto crearCompraDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             using var transaccion = await _context.Database.BeginTransactionAsync();
 
             try
@@ -88,6 +93,8 @@ namespace PetLove.Server.Controllers
                         PrecioUnitario = precioUnitario,
                         Subtotal = subtotal
                     };
+                    producto.Stock += detalleDto.Cantidad; 
+                    _context.Productos.Update(producto);
                     _context.DetallesCompras.Add(detalle);
                 }
                 compra.Total = totalCompra;

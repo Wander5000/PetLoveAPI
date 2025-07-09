@@ -36,9 +36,9 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CrearUsuarioDto>> CrearUsuario(CrearUsuarioDto crearUsuarioDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Hubo un Error Con Tu solicitud, Revisa que los campos esten correctos y vuelve a intentarlo");
+                return BadRequest(ModelState);
             }
 
             var usuario = new Usuario
@@ -57,6 +57,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarRol(int id, ActualizarUsuarioDto actualizarUsuarioDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {

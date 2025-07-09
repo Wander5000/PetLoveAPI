@@ -43,7 +43,7 @@ namespace PetLove.Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Error en los datos enviados. Verifica los campos e intenta de nuevo.");
+                return BadRequest(ModelState);
             }
 
             var proveedor = new Proveedor
@@ -70,6 +70,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarProveedor(int id, AccionesProveedorDto proveedorDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var proveedor = await _context.Proveedores.FindAsync(id);
             if (proveedor == null)
             {
