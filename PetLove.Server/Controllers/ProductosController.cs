@@ -37,6 +37,10 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<AccionesProductoDto>> CrearProducto(AccionesProductoDto crearProductoDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var producto = new Producto
             {
@@ -56,22 +60,27 @@ namespace PetLove.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto ActualizarProductoDto)
+        public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto actualizarImagenDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {
                 return NotFound("Producto no encontrado.");
             }
 
-            producto.Nombre = ActualizarProductoDto.NombreProducto;
-            producto.Categoria = ActualizarProductoDto.Categoria;
-            producto.Stock = ActualizarProductoDto.Stock;
-            producto.Medida = ActualizarProductoDto.Medida;
-            producto.Cantidad = ActualizarProductoDto.Cantidad;
-            producto.Marca = ActualizarProductoDto.Marca;
-            producto.Precio = ActualizarProductoDto.Precio;
-            producto.Estado = ActualizarProductoDto.Estado;
+            producto.Nombre = actualizarImagenDto.NombreProducto;
+            producto.Categoria = actualizarImagenDto.Categoria;
+            producto.Stock = actualizarImagenDto.Stock;
+            producto.Medida = actualizarImagenDto.Medida;
+            producto.Cantidad = actualizarImagenDto.Cantidad;
+            producto.Marca = actualizarImagenDto.Marca;
+            producto.Precio = actualizarImagenDto.Precio;
+            producto.Estado = actualizarImagenDto.Estado;
             await _context.SaveChangesAsync();
             return NoContent();
         }

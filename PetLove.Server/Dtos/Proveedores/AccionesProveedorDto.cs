@@ -1,9 +1,7 @@
 ﻿namespace PetLove.Server.Dtos.Proveedores
 {
-    public class ProveedorDto
+    public class AccionesProveedorDto
     {
-        public int IdProveedor { get; set; }
-
         public string Empresa { get; set; } = null!;
 
         public string TipoDocumento { get; set; } = null!;

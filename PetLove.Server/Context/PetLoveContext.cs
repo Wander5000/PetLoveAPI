@@ -28,7 +28,7 @@ public partial class PetLoveContext : DbContext
 
     public virtual DbSet<Estado> Estados { get; set; }
 
-    public virtual DbSet<Imagene> Imagenes { get; set; }
+    public virtual DbSet<Imagen> Imagenes { get; set; }
 
     public virtual DbSet<Marca> Marcas { get; set; }
 
@@ -157,7 +157,7 @@ public partial class PetLoveContext : DbContext
             entity.Property(e => e.Nombre).IsUnicode(false);
         });
 
-        modelBuilder.Entity<Imagene>(entity =>
+        modelBuilder.Entity<Imagen>(entity =>
         {
             entity.HasKey(e => e.IdImagen).HasName("PK__Imagenes__B42D8F2A1E33C173");
 

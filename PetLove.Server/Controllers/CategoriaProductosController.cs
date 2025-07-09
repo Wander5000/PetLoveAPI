@@ -32,6 +32,11 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoriaProductoDto>> CrearCategoria(AccionesCategoriaProductoDto crearCategoriaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var categoria = new CategoriaProducto
             {
                 Nombre = crearCategoriaDto.Nombre,
@@ -45,6 +50,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarCategoria(int id, AccionesCategoriaProductoDto actualizarCategoriaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var categoria = await _context.CategoriaProductos.FindAsync(id);
             if (categoria == null)
             {
@@ -60,13 +70,37 @@ namespace PetLove.Server.Controllers
         public async Task<IActionResult> EliminarCategoria(int id)
         {
             var categoria = await _context.CategoriaProductos.FindAsync(id);
+
             if (categoria == null)
             {
-                return NotFound("la categoria Solicitada es Erronea o Inexistente");
+                return NotFound("La categoría solicitada no existe.");
             }
+
+            // Buscar productos relacionados a la categoría
+            var productos = await _context.Productos
+                .Where(p => p.Categoria == id)
+                .ToListAsync();
+
+            if (productos.Any())
+            {
+                // Verificar si alguno de los productos está en una compra
+                var productoIds = productos.Select(p => p.IdProducto).ToList();
+                var enCompras = await _context.DetallesCompras
+                    .AnyAsync(dc => productoIds.Contains(dc.Producto));
+
+                if (enCompras)
+                {
+                    return BadRequest("No se puede eliminar la categoría porque hay productos asociados a compras.");
+                }
+
+                return BadRequest("No se puede eliminar la categoría porque tiene productos asociados.");
+            }
+
             _context.CategoriaProductos.Remove(categoria);
             await _context.SaveChangesAsync();
+
             return NoContent();
         }
+
     }
 }
