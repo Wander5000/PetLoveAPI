@@ -8,8 +8,6 @@
 
         public DateOnly FechaCompra { get; set; }
 
-        public decimal Total { get; set; }
-
         public bool Estado { get; set; }
 
         public List<CrearDetallesCompraDto> Detalles { get; set; } = new List<CrearDetallesCompraDto>();

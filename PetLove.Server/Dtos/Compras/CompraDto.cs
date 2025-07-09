@@ -21,8 +21,6 @@
     {
         public int IdDetalle { get; set; }
 
-        public int Compra { get; set; }
-
         public string Producto { get; set; } = null!;
 
         public int Cantidad { get; set; }

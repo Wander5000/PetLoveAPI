@@ -51,11 +51,6 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CrearVentaDto>> CrearVenta(CrearVentaDto crearVentaDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             using var transaccion = await _context.Database.BeginTransactionAsync();
 
             try
