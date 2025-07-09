@@ -33,6 +33,11 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async  Task<ActionResult<CrearRolDto>> CrearRol(CrearRolDto crearRolDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var rol = new Rol
             {
                 NombreRol = crearRolDto.NombreRol,
@@ -46,6 +51,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarRol(int id, CrearRolDto rolDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var rol = await _context.Roles.FindAsync(id);
             if (rol == null)
             {

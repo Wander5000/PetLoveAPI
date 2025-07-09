@@ -32,6 +32,11 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoriaProductoDto>> CrearCategoria(AccionesCategoriaProductoDto crearCategoriaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var categoria = new CategoriaProducto
             {
                 Nombre = crearCategoriaDto.Nombre,
@@ -45,6 +50,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarCategoria(int id, AccionesCategoriaProductoDto actualizarCategoriaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var categoria = await _context.CategoriaProductos.FindAsync(id);
             if (categoria == null)
             {

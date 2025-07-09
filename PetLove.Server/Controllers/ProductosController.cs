@@ -37,6 +37,10 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<AccionesProductoDto>> CrearProducto(AccionesProductoDto crearProductoDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var producto = new Producto
             {
@@ -58,6 +62,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto actualizarImagenDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {

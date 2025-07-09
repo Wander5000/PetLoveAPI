@@ -32,6 +32,10 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<AccionesEstadoDto>> CrearEstado(AccionesEstadoDto crearEstadoDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var estado = new Estado
             {
                 Nombre = crearEstadoDto.Nombre
@@ -44,6 +48,10 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> ActualizarEstado(int id, AccionesEstadoDto actualizarEstadoDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var estado = await _context.Estados.FindAsync(id);
             if (estado == null)
             {

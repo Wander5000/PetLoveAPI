@@ -38,8 +38,7 @@ namespace PetLove.Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
-                
+                return BadRequest(ModelState); 
             }
 
             var cliente = new Cliente

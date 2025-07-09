@@ -32,10 +32,9 @@ namespace PetLove.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<MarcaDto>> CrearMarca(AccionesMarcaDto crearMarcaDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Hubo un Error Con Tu solicitud, Revisa que los campos esten correctos y vuelve a intentarlo");
-
+                return BadRequest(ModelState);
             }
             var marca = new Marca
             {
@@ -50,6 +49,11 @@ namespace PetLove.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarMarca(int id, AccionesMarcaDto actualizarMarcaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var marca = await _context.Marcas.FindAsync(id);
             if (marca == null)
             {
