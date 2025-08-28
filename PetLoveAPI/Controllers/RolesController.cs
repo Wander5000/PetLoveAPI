@@ -40,5 +40,37 @@ namespace PetLoveAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarRoles), new { id = rol.IdRol }, dto);
         }
+
+        //[HttpPut("{id}")]
+        //public async Task<ActionResult> ActualizarRol(int id, CrearRolDto rolDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var rol = await _context.Roles.FindAsync(id);
+        //    if (rol == null)
+        //    {
+        //        return NotFound("El Rol Solicitado es Erroneo o Inexistente");
+        //    }
+        //    rol.NombreRol = rolDto.NombreRol;
+        //    rol.Descripcion = rolDto.Descripcion;
+        //    await _context.SaveChangesAsync();
+        //    return NoContent();
+        //}
+
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult> EliminarRol(int id)
+        //{
+        //    var rol = await _context.Roles.FindAsync(id);
+        //    if (rol == null)
+        //    {
+        //        return NotFound("El Rol Solicitado es Erroneo o Inexistente");
+        //    }
+        //    _context.Roles.Remove(rol);
+        //    await _context.SaveChangesAsync();
+        //    return NoContent();
+        //}
     }
 }

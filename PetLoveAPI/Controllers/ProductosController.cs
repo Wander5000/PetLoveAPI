@@ -58,5 +58,45 @@ namespace PetLoveAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarProductos), new { id = producto.IdProducto }, dto);
         }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDto actualizarImagenDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var producto = await _context.Productos.FindAsync(id);
+        //    if (producto == null)
+        //    {
+        //        return NotFound("Producto no encontrado.");
+        //    }
+
+        //    producto.Nombre = actualizarImagenDto.NombreProducto;
+        //    producto.Categoria = actualizarImagenDto.Categoria;
+        //    producto.Stock = actualizarImagenDto.Stock;
+        //    producto.Medida = actualizarImagenDto.Medida;
+        //    producto.Cantidad = actualizarImagenDto.Cantidad;
+        //    producto.Marca = actualizarImagenDto.Marca;
+        //    producto.Precio = actualizarImagenDto.Precio;
+        //    producto.Estado = actualizarImagenDto.Estado;
+        //    await _context.SaveChangesAsync();
+        //    return NoContent();
+        //}
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> EliminarProducto(int id)
+        //{
+        //    var producto = await _context.Productos.FindAsync(id);
+        //    if (producto == null)
+        //    {
+        //        return NotFound("Producto no encontrado.");
+        //    }
+
+        //    _context.Productos.Remove(producto);
+        //    await _context.SaveChangesAsync();
+        //    return NoContent();
+        //}
     }
 }

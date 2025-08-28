@@ -32,7 +32,7 @@ public partial class PetLoveApiContext : DbContext
 
     public virtual DbSet<Medida> Medidas { get; set; }
 
-    public virtual DbSet<MetodoPago> MetodoPagos { get; set; }
+    public virtual DbSet<MetodoPago> MetodoPago { get; set; }
 
     public virtual DbSet<Permiso> Permisos { get; set; }
 

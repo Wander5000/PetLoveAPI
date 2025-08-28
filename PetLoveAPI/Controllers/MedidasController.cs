@@ -7,7 +7,7 @@ using PetLoveAPI.DTOs.Medida;
 
 namespace PetLoveAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MedidasController : ControllerBase
     {
@@ -39,6 +39,36 @@ namespace PetLoveAPI.Controllers
             _context.Medidas.Add(medida);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarMedidas), new { id = medida.IdMedida }, dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarMedida(int id, AccionesMedidaDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var medida = await _context.Medidas.FindAsync(id);
+            if (medida == null)
+            {
+                return NotFound("Medida no encontrada.");
+            }
+            medida.NombreMedida = dto.NombreMedida;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarMedida(int id)
+        {
+            var medida = await _context.Medidas.FindAsync(id);
+            if (medida == null)
+            {
+                return NotFound("Medida no encontrada.");
+            }
+            _context.Medidas.Remove(medida);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

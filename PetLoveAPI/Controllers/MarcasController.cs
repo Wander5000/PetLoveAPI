@@ -39,5 +39,37 @@ namespace PetLoveAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarMarcas), new { id = marca.IdMarca }, dto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarMarca(int id, AccionesMarcaDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var marca = await _context.Marcas.FindAsync(id);
+            if (marca == null)
+            {
+                return NotFound("Marca no encontrada.");
+            }
+            marca.NombreMarca = dto.NombreMarca;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarMarca(int id)
+        {
+            var marca = await _context.Marcas.FindAsync(id);
+            if (marca == null)
+            {
+                return NotFound("Marca no encontrada.");
+            }
+
+            _context.Marcas.Remove(marca);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
