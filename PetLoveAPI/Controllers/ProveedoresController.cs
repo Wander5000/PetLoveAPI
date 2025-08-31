@@ -18,10 +18,10 @@ namespace PetLoveAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Proveedor>>> ListarProveedores()
+        public async Task<ActionResult<IEnumerable<ProveedorDTO>>> ListarProveedores()
         {
-            return await _context.Proveedores
-                .Select(p => new Proveedor
+            var proveedores = await _context.Proveedores
+                .Select(p => new ProveedorDTO
                 {
                     IdProveedor = p.IdProveedor,
                     Empresa = p.Empresa,
@@ -35,10 +35,12 @@ namespace PetLoveAPI.Controllers
                     Estado = p.Estado,
                     Contacto = p.Contacto
                 }).ToListAsync();
+
+            return Ok(proveedores);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProveedorDTO>> CrearProveedor(ProveedorDTO proveedorDto)
+        public async Task<ActionResult<ProveedorDTO>> CrearProveedor(ProveedorDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -47,49 +49,48 @@ namespace PetLoveAPI.Controllers
 
             var proveedor = new Proveedor
             {
-                IdProveedor = proveedorDto.IdProveedor,
-                Empresa = proveedorDto.Empresa,
-                TipoDocumento = proveedorDto.TipoDocumento,
-                Documento = proveedorDto.Documento,
-                Nombre = proveedorDto.Nombre,
-                Correo = proveedorDto.Correo,
-                Celular = proveedorDto.Celular,
-                Direccion = proveedorDto.Direccion,
-                Ciudad = proveedorDto.Ciudad,
-                Estado = proveedorDto.Estado,
-                Contacto = proveedorDto.Contacto
+                IdProveedor = dto.IdProveedor,
+                Empresa = dto.Empresa,
+                TipoDocumento = dto.TipoDocumento,
+                Documento = dto.Documento,
+                Nombre = dto.Nombre,
+                Correo = dto.Correo,
+                Celular = dto.Celular,
+                Direccion = dto.Direccion,
+                Ciudad = dto.Ciudad,
+                Estado = dto.Estado,
+                Contacto = dto.Contacto
             };
 
             _context.Proveedores.Add(proveedor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(ListarProveedores), new { id = proveedor.IdProveedor }, proveedorDto);
+            return CreatedAtAction(nameof(ListarProveedores), new { id = proveedor.IdProveedor }, dto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> ActualizarProveedor(int id, AccionesProveedorDTO proveedorDto)
+        public async Task<ActionResult> ActualizarProveedor(int id, AccionesProveedorDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             var proveedor = await _context.Proveedores.FindAsync(id);
             if (proveedor == null)
             {
                 return NotFound("El proveedor solicitado no existe.");
             }
 
-            proveedor.Empresa = proveedorDto.Empresa;
-            proveedor.TipoDocumento = proveedorDto.TipoDocumento;
-            proveedor.Documento = proveedorDto.Documento;
-            proveedor.Nombre = proveedorDto.Nombre;
-            proveedor.Correo = proveedorDto.Correo;
-            proveedor.Celular = proveedorDto.Celular;
-            proveedor.Direccion = proveedorDto.Direccion;
-            proveedor.Ciudad = proveedorDto.Ciudad;
-            proveedor.Estado = proveedorDto.Estado;
-            proveedor.Contacto = proveedorDto.Contacto;
+            proveedor.Empresa = dto.Empresa;
+            proveedor.TipoDocumento = dto.TipoDocumento;
+            proveedor.Documento = dto.Documento;
+            proveedor.Nombre = dto.Nombre;
+            proveedor.Correo = dto.Correo;
+            proveedor.Celular = dto.Celular;
+            proveedor.Direccion = dto.Direccion;
+            proveedor.Ciudad = dto.Ciudad;
+            proveedor.Estado = dto.Estado;
+            proveedor.Contacto = dto.Contacto;
 
             await _context.SaveChangesAsync();
             return NoContent();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetLoveAPI.Context;
 using PetLoveAPI.DTOs.Usuario;
@@ -6,8 +7,8 @@ using PetLoveAPI.DTOs.Usuario;
 namespace PetLoveAPI.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
-    public class UsuariosController : ControllerBase
+    [ApiController] 
+    public class UsuariosController : ControllerBase    
     {
         private readonly PetLoveApiContext _context;
         public UsuariosController(PetLoveApiContext context)
@@ -15,6 +16,7 @@ namespace PetLoveAPI.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioDTO>>> ListarUsuarios()
         {

@@ -29,7 +29,7 @@ namespace PetLoveAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MarcaDTO>> CrearMarca(MarcaDTO dto)
+        public async Task<ActionResult<AccionesMarcaDTO>> CrearMarca(AccionesMarcaDTO dto)
         {
             var marca = new Marca
             {

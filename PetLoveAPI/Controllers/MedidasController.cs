@@ -30,7 +30,7 @@ namespace PetLoveAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MedidaDTO>> CrearMedida(MedidaDTO dto)
+        public async Task<ActionResult<AccionesMedidaDTO>> CrearMedida(AccionesMedidaDTO dto)
         {
             var medida = new Medida
             {

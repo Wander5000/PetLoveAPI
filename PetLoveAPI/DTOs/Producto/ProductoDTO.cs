@@ -19,5 +19,13 @@
         public decimal Precio { get; set; }
 
         public bool Estado { get; set; }
+
+        public List<ImagenDTO> Imagenes { get; set; } = new List<ImagenDTO>();
+    }
+
+    public class ImagenDTO
+    {
+        public int IdImagen { get; set; }
+        public string Url { get; set; } = null!;
     }
 }

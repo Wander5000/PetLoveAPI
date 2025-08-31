@@ -28,7 +28,8 @@ namespace PetLoveAPI.Services.Auth
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
-                expires: DateTime.Now.AddHours(2)
+                expires: DateTime.Now.AddHours(2),
+                signingCredentials: creds
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
