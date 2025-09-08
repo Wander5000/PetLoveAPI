@@ -6,7 +6,7 @@
 
         public string NombreUsuario { get; set; } = null!;
 
-        public int TipoDocumento { get; set; }
+        public string TipoDocumento { get; set; } = null!;
 
         public string NumeroDocumento { get; set; } = null!;
 

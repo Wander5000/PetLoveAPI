@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetLoveAPI.Context;
 using PetLoveAPI.DTOs.Usuario;
+using PetLoveAPI.Models;
 
 namespace PetLoveAPI.Controllers
 {
@@ -16,17 +17,17 @@ namespace PetLoveAPI.Controllers
             _context = context;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioDTO>>> ListarUsuarios()
         {
             return await _context.Usuarios
                 .Include(u => u.RolNavigation)
+                .Include(u => u.TipoDocumentoNavigation)
                 .Select(u => new UsuarioDTO
                 {
                     IdUsuario = u.IdUsuario,
                     NombreUsuario = u.NombreUsuario,
-                    TipoDocumento = u.TipoDocumento,
+                    TipoDocumento = u.TipoDocumentoNavigation.NombreTipoDoc,
                     NumeroDocumento = u.NumeroDocumento,
                     Correo = u.Correo,
                     Password = u.Password, // Por mientras se corrije el DTO para no exponer la contraseña
@@ -37,29 +38,29 @@ namespace PetLoveAPI.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<CrearUsuarioDto>> CrearUsuario(CrearUsuarioDto crearUsuarioDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost]
+        public async Task<ActionResult<CrearUsuarioDTO>> CrearUsuario(CrearUsuarioDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var usuario = new Usuario
-        //    {
-        //        NombreUsuario = crearUsuarioDto.NombreUsuario,
-        //        TipoDocumento = crearUsuarioDto.TipoDocumento,
-        //        NumeroDocumento = crearUsuarioDto.NumeroDocumento,
-        //        Correo = crearUsuarioDto.Correo,
-        //        Password = crearUsuarioDto.Password,
-        //        Direccion = crearUsuarioDto.Direccion,
-        //        Rol = crearUsuarioDto.Rol,
-        //        Estado = crearUsuarioDto.Estado
-        //    };
-        //    _context.Usuarios.Add(usuario);
-        //    await _context.SaveChangesAsync();
-        //    return CreatedAtAction(nameof(ListarUsuarios), new { id = usuario.IdUsuario }, crearUsuarioDto);
-        //}
+            var usuario = new Usuario
+            {
+                NombreUsuario = dto.NombreUsuario,
+                TipoDocumento = dto.TipoDocumento,
+                NumeroDocumento = dto.NumeroDocumento,
+                Correo = dto.Correo,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Direccion = dto.Direccion,
+                Rol = dto.Rol,
+                Estado = dto.Estado
+            };
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(ListarUsuarios), new { id = usuario.IdUsuario }, dto);
+        }
 
         //[HttpPut("{id}")]
         //public async Task<ActionResult> ActualizarUsuario(int id, ActualizarUsuarioDto actualizarUsuarioDto)
