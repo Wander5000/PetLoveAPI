@@ -106,5 +106,12 @@ namespace PetLoveAPI.Controllers
                 return BadRequest("Error al crear la venta.");
             }
         }
+
+        //[HttpPut("cambiar-estado/{id}")]
+        //public async Task<IActionResult> CambiarEstadoVenta(int id, CambiarEstadoVentaDTO dto)
+        //{
+
+        //}
+
     }
 }

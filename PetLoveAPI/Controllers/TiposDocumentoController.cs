@@ -38,5 +38,35 @@ namespace PetLoveAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarTiposDoc), new { id = td.IdTipoDocumento }, dto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarTipoDoc(int id, AccionesTipoDocumentoDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var tipodocumento = await _context.TipoDocumentos.FindAsync(id);
+            if (tipodocumento == null)
+            {
+                return NotFound("El Tipo de Documento Solicitado es Erroneo o Inexistente");
+            }
+            tipodocumento.NombreTipoDoc = dto.NombreTipoDoc;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> EliminarTipoDoc(int id)
+        {
+            var tipodocumento = await _context.TipoDocumentos.FindAsync(id);
+            if (tipodocumento == null)
+            {
+                return NotFound("El Tipo de Documento Solicitado es Erroneo o Inexistente");
+            }
+            _context.TipoDocumentos.Remove(tipodocumento);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

@@ -15,18 +15,24 @@ namespace PetLoveAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("LogIn")]
+        [HttpPost("Log-In")]
         public async Task<IActionResult> Login(LoginDTO request)
         {
             var response = await _authService.LoginAsync(request);
             return Ok(response);
         }
 
-        [HttpPost("Registro")]
+        [HttpPost("Sign-In")]
         public async Task<IActionResult> Register(RegisterDTO request)
         {
             var response = await _authService.RegisterAsync(request);
             return Ok(response);
+        }
+
+        [HttpPost("Forgot-Password")]
+        public async Task<IActionResult> Forgot_Password(ForgotPasswordEmailDTO request)
+        {
+            return Ok();
         }
     }
 }

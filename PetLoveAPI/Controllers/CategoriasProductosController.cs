@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetLoveAPI.Context;
-using PetLoveAPI.Models;
 using PetLoveAPI.DTOs.CategoriaProducto;
+using PetLoveAPI.DTOs.CategoriaProducto;
+using PetLoveAPI.Models;
 
 namespace PetLoveAPI.Controllers
 {
@@ -42,6 +43,37 @@ namespace PetLoveAPI.Controllers
             _context.CategoriaProductos.Add(categoria);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarCategorias), new { id = categoria.IdCategoria }, dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarTipoDoc(int id, AccionesCategoriaProductoDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var categoria = await _context.CategoriaProductos.FindAsync(id);
+            if (categoria == null)
+            {
+                return NotFound("El Tipo de Documento Solicitado es Erroneo o Inexistente");
+            }
+            categoria.NombreCategoria = dto.NombreCategoria;
+            categoria.Descripcion = dto.Descripcion;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> EliminarTipoDoc(int id)
+        {
+            var categoria = await _context.CategoriaProductos.FindAsync(id);
+            if (categoria == null)
+            {
+                return NotFound("El Tipo de Documento Solicitado es Erroneo o Inexistente");
+            }
+            _context.CategoriaProductos.Remove(categoria);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

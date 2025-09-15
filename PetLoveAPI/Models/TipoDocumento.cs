@@ -9,5 +9,7 @@ public partial class TipoDocumento
 
     public string NombreTipoDoc { get; set; } = null!;
 
+    public virtual ICollection<Proveedor> Proveedores { get; set; } = new List<Proveedor>();
+
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

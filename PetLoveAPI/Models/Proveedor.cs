@@ -7,9 +7,7 @@ public partial class Proveedor
 {
     public int IdProveedor { get; set; }
 
-    public string Empresa { get; set; } = null!;
-
-    public string TipoDocumento { get; set; } = null!;
+    public int TipoDocumento { get; set; }
 
     public string Documento { get; set; } = null!;
 
@@ -19,13 +17,15 @@ public partial class Proveedor
 
     public string Celular { get; set; } = null!;
 
+    public string? Telefono { get; set; }
+
     public string Direccion { get; set; } = null!;
 
     public string Ciudad { get; set; } = null!;
 
     public bool Estado { get; set; }
 
-    public string? Contacto { get; set; }
-
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
+
+    public virtual TipoDocumento TipoDocumentoNavigation { get; set; } = null!;
 }

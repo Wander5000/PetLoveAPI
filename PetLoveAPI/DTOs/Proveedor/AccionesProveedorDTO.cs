@@ -2,9 +2,7 @@
 {
     public class AccionesProveedorDTO
     {
-        public string Empresa { get; set; } = null!;
-
-        public string TipoDocumento { get; set; } = null!;
+        public int TipoDocumento { get; set; }
 
         public string Documento { get; set; } = null!;
 
@@ -20,6 +18,5 @@
 
         public bool Estado { get; set; }
 
-        public string? Contacto { get; set; }
     }
 }

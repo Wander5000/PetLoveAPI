@@ -4,8 +4,6 @@
     {
         public int IdProveedor { get; set; }
 
-        public string Empresa { get; set; } = null!;
-
         public string TipoDocumento { get; set; } = null!;
 
         public string Documento { get; set; } = null!;
@@ -21,7 +19,5 @@
         public string Ciudad { get; set; } = null!;
 
         public bool Estado { get; set; }
-
-        public string? Contacto { get; set; }
     }
 }

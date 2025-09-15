@@ -8,7 +8,7 @@ using PetLoveAPI.Models;
 namespace PetLoveAPI.Controllers
 {
     [Route("[controller]")]
-    [ApiController] 
+    [ApiController]
     public class UsuariosController : ControllerBase    
     {
         private readonly PetLoveApiContext _context;
@@ -62,29 +62,42 @@ namespace PetLoveAPI.Controllers
             return CreatedAtAction(nameof(ListarUsuarios), new { id = usuario.IdUsuario }, dto);
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> ActualizarUsuario(int id, ActualizarUsuarioDto actualizarUsuarioDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ActualizarUsuario(int id, ActualizarUsuarioDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var usuario = await _context.Usuarios.FindAsync(id);
-        //    if (usuario == null)
-        //    {
-        //        return NotFound("El Usuario Solicitado es Erroneo o Inexistente");
-        //    }
-        //    usuario.NombreUsuario = actualizarUsuarioDto.NombreUsuario;
-        //    usuario.TipoDocumento = actualizarUsuarioDto.TipoDocumento;
-        //    usuario.NumeroDocumento = actualizarUsuarioDto.NumeroDocumento;
-        //    usuario.Correo = actualizarUsuarioDto.Correo;
-        //    usuario.Direccion = actualizarUsuarioDto.Direccion;
-        //    usuario.Rol = actualizarUsuarioDto.Rol;
-        //    usuario.Estado = actualizarUsuarioDto.Estado;
-        //    await _context.SaveChangesAsync();
-        //    return NoContent();
-        //}
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound("El Usuario Solicitado es Erroneo o Inexistente");
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("cambiar-estado/{id}")]
+        public async Task<ActionResult> CambiarEstadoUsuario(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound("El Usuario Solicitado es Erroneo o Inexistente");
+            }
+            if (usuario.Estado)
+            {
+                usuario.Estado = false;
+            }
+            else
+            {
+                usuario.Estado = true;
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         //[HttpDelete("{id}")]
         //public async Task<ActionResult> EliminarUsuario(int id)

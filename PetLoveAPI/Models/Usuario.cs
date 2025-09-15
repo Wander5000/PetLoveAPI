@@ -23,6 +23,8 @@ public partial class Usuario
 
     public bool Estado { get; set; }
 
+    public virtual ICollection<PasswordRecovery> PasswordRecoveries { get; set; } = new List<PasswordRecovery>();
+
     public virtual Rol RolNavigation { get; set; } = null!;
 
     public virtual TipoDocumento TipoDocumentoNavigation { get; set; } = null!;

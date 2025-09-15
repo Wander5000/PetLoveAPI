@@ -24,8 +24,7 @@ namespace PetLoveAPI.Controllers
                 .Select(p => new ProveedorDTO
                 {
                     IdProveedor = p.IdProveedor,
-                    Empresa = p.Empresa,
-                    TipoDocumento = p.TipoDocumento,
+                    TipoDocumento = p.TipoDocumentoNavigation.NombreTipoDoc,
                     Documento = p.Documento,
                     Nombre = p.Nombre,
                     Correo = p.Correo,
@@ -33,14 +32,13 @@ namespace PetLoveAPI.Controllers
                     Direccion = p.Direccion,
                     Ciudad = p.Ciudad,
                     Estado = p.Estado,
-                    Contacto = p.Contacto
                 }).ToListAsync();
 
             return Ok(proveedores);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProveedorDTO>> CrearProveedor(ProveedorDTO dto)
+        public async Task<ActionResult<ProveedorDTO>> CrearProveedor(AccionesProveedorDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -49,8 +47,6 @@ namespace PetLoveAPI.Controllers
 
             var proveedor = new Proveedor
             {
-                IdProveedor = dto.IdProveedor,
-                Empresa = dto.Empresa,
                 TipoDocumento = dto.TipoDocumento,
                 Documento = dto.Documento,
                 Nombre = dto.Nombre,
@@ -59,7 +55,6 @@ namespace PetLoveAPI.Controllers
                 Direccion = dto.Direccion,
                 Ciudad = dto.Ciudad,
                 Estado = dto.Estado,
-                Contacto = dto.Contacto
             };
 
             _context.Proveedores.Add(proveedor);
@@ -81,7 +76,6 @@ namespace PetLoveAPI.Controllers
                 return NotFound("El proveedor solicitado no existe.");
             }
 
-            proveedor.Empresa = dto.Empresa;
             proveedor.TipoDocumento = dto.TipoDocumento;
             proveedor.Documento = dto.Documento;
             proveedor.Nombre = dto.Nombre;
@@ -89,8 +83,6 @@ namespace PetLoveAPI.Controllers
             proveedor.Celular = dto.Celular;
             proveedor.Direccion = dto.Direccion;
             proveedor.Ciudad = dto.Ciudad;
-            proveedor.Estado = dto.Estado;
-            proveedor.Contacto = dto.Contacto;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -106,6 +98,26 @@ namespace PetLoveAPI.Controllers
             }
 
             _context.Proveedores.Remove(proveedor);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("cambiar-estado/{id}")]
+        public async Task<ActionResult> CambiarEstadoProveedor(int id)
+        {
+            var proveedor = await _context.Proveedores.FindAsync(id);
+            if (proveedor == null)
+            {
+                return NotFound("El proveedor solicitado no existe.");
+            }
+            if(proveedor.Estado)
+            {
+                proveedor.Estado = false;
+            }
+            else
+            {
+                proveedor.Estado = true;
+            }
             await _context.SaveChangesAsync();
             return NoContent();
         }

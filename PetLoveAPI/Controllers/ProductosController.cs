@@ -79,5 +79,79 @@ namespace PetLoveAPI.Controllers
             return CreatedAtAction(nameof(ListarProductos), new { id = producto.IdProducto }, dto);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarProducto(int id, AccionesProductoDTO dto)
+        {
+            var producto = await _context.Productos
+                .Include(p => p.Imagenes)
+                .FirstOrDefaultAsync(p => p.IdProducto == id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            producto.NombreProducto = dto.NombreProducto;
+            producto.Categoria = dto.Categoria;
+            producto.Stock = dto.Stock;
+            producto.Cantidad = dto.Cantidad;
+            producto.Medida = dto.Medida;
+            producto.Marca = dto.Marca;
+            producto.Precio = dto.Precio;
+            producto.Estado = dto.Estado;
+            // Actualizar imágenes
+            if (dto.Imagenes != null)
+            {
+                // Eliminar imágenes existentes
+                _context.Imagenes.RemoveRange(producto.Imagenes);
+                // Agregar nuevas imágenes
+                foreach (var imagenDto in dto.Imagenes)
+                {
+                    var imagen = new Imagen
+                    {
+                        Producto = producto.IdProducto,
+                        Url = imagenDto.Url
+                    };
+                    _context.Imagenes.Add(imagen);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarProducto(int id)
+        {
+            var producto = await _context.Productos
+                .Include(p => p.Imagenes)
+                .FirstOrDefaultAsync(p => p.IdProducto == id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            _context.Imagenes.RemoveRange(producto.Imagenes);
+            _context.Productos.Remove(producto);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("cambiar-estado/{id}")]
+        public async Task<IActionResult> ActualizarEstadoProducto(int id)
+        {
+            var producto = await _context.Productos.FindAsync(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            if (producto.Estado)
+            {
+                producto.Estado = false;
+            }
+            else
+            {
+                producto.Estado = true;
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

@@ -7,15 +7,6 @@ namespace PetLoveAPI.Validators
     {
         public ProveedorValidator()
         {
-            RuleFor(p => p.Empresa)
-                .NotEmpty().WithMessage("El nombre de la empresa es obligatorio.")
-                .MaximumLength(100).WithMessage("El nombre de la empresa no debe superar los 100 caracteres.")
-                .Matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$").WithMessage("Solo se permiten letras, números y espacios.");
-
-            RuleFor(p => p.TipoDocumento)
-                .NotEmpty().WithMessage("El tipo de documento es obligatorio.")
-                .Must(t => t == "CC" || t == "NIT" || t == "CE" || t == "TI")
-                .WithMessage("Tipo de documento inválido (permitidos: CC, NIT, CE, TI).");
 
             RuleFor(p => p.Documento)
                 .NotEmpty().WithMessage("El número de documento es obligatorio.")
@@ -46,11 +37,6 @@ namespace PetLoveAPI.Validators
 
             RuleFor(p => p.Estado)
                 .NotNull().WithMessage("El estado es obligatorio.");
-
-            RuleFor(p => p.Contacto)
-                .MaximumLength(100).WithMessage("El nombre del contacto no debe superar los 100 caracteres.")
-                .Matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*$").WithMessage("El contacto solo puede contener letras y espacios.")
-                .When(p => !string.IsNullOrWhiteSpace(p.Contacto));
         }
     }
 }

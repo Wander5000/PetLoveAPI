@@ -40,5 +40,35 @@ namespace PetLoveAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(ListarMetodosPago), new { id = metodoPago.IdMetodoPago }, dto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarMetodoPago(int id, AccionesMetodoPagoDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var metodoPago = await _context.MetodoPago.FindAsync(id);
+            if (metodoPago == null)
+            {
+                return NotFound("El Metodo de Pago Solicitado es Erroneo o Inexistente");
+            }
+            metodoPago.NombreMetodoPago = dto.NombreMetodoPago;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarMetodoPago(int id)
+        {
+            var metodoPago = await _context.MetodoPago.FindAsync(id);
+            if (metodoPago == null)
+            {
+                return NotFound("El Metodo de Pago Solicitado es Erroneo o Inexistente");
+            }
+            _context.MetodoPago.Remove(metodoPago);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
